@@ -19,7 +19,7 @@ const MapScreen = () => {
 	const navigation = useNavigation();
 
 	return (
-		<KeyboardAvoidingView behavior='position'>
+		<KeyboardAvoidingView behavior='height'>
 			<TouchableOpacity
 				onPress={() => navigation.navigate("Home")}
 				style={tw`absolute bg-gray-100 top-10 left-4 z-30 p-2 rounded-full shadow-lg`}

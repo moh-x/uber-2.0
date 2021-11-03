@@ -1,11 +1,5 @@
 import React from "react";
-import {
-	SafeAreaView,
-	Text,
-	View,
-	Image,
-	KeyboardAvoidingView,
-} from "react-native";
+import { SafeAreaView, View, Image, KeyboardAvoidingView } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { GOOGLE_MAPS_KEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -19,7 +13,7 @@ const HomeScreen = () => {
 	const dispatch = useDispatch();
 
 	return (
-		<SafeAreaView style={tw`bg-white h-full`}>
+		<SafeAreaView style={tw`bg-white mt-5 h-full`}>
 			<View style={tw`px-5 py-3 flex-1`}>
 				<Image
 					source={{ uri: "https://links.papareact.com/gzs" }}
