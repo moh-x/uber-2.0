@@ -35,9 +35,16 @@ const HomeScreen = () => {
 								setOrigin({
 									location: details?.geometry?.location,
 									description: data?.description,
+									identifier: details?.address_components?.reduce(
+										(out, { long_name, types }) => {
+											if (types.includes("administrative_area_level_1"))
+												return long_name;
+										}
+									),
 								})
 							);
 							dispatch(setDestination(null));
+							// console.log("data", data, "details", details);
 						}}
 						styles={{ container: { flex: 0 }, textInput: { fontSize: 18 } }}
 					/>

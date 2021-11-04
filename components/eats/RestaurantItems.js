@@ -12,6 +12,7 @@ import tw from "tailwind-react-native-classnames";
 
 export const restaurants = [
 	{
+		id: "001",
 		name: "Beachside Bar House",
 		imageUrl:
 			"http://appsmav.com/blog/wp-content/uploads/2013/07/Apps-Mav-Restaurant-Cafe-App.jpeg",
@@ -21,6 +22,7 @@ export const restaurants = [
 		rating: 4,
 	},
 	{
+		id: "002",
 		name: "Countryside Bar",
 		imageUrl:
 			"https://static-otelico.com/cache/montmartre_apolonia/hotel_paris_montmartre_resto.jpg",
@@ -30,6 +32,7 @@ export const restaurants = [
 		rating: 4.5,
 	},
 	{
+		id: "003",
 		name: "Late Night Jollof",
 		imageUrl:
 			"http://appsmav.com/blog/wp-content/uploads/2013/07/Apps-Mav-Restaurant-Cafe-App.jpeg",
@@ -39,6 +42,7 @@ export const restaurants = [
 		rating: 4.5,
 	},
 	{
+		id: "004",
 		name: "Beef Noodles",
 		imageUrl:
 			"https://static-otelico.com/cache/montmartre_apolonia/hotel_paris_montmartre_resto.jpg",
@@ -53,9 +57,9 @@ const RestaurantItems = ({ restaurantsData }) => {
 	return (
 		<FlatList
 			data={restaurantsData}
-			keyExtractor={(item) => item.name}
+			keyExtractor={(item, idx) => idx.toString()}
 			renderItem={({
-				item: { name, imageUrl, categories, price, reviews, rating },
+				item: { name, image_url, categories, price, reviews, rating },
 			}) => (
 				<TouchableOpacity
 					activeOpacity={1}
@@ -63,7 +67,7 @@ const RestaurantItems = ({ restaurantsData }) => {
 				>
 					<View>
 						<Image
-							source={{ uri: imageUrl }}
+							source={{ uri: image_url }}
 							alt={name}
 							style={{ width: "100%", height: 180 }}
 						/>

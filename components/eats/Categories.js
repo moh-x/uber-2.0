@@ -16,8 +16,8 @@ const Categories = () => {
 		<View style={tw`mt-2 bg-white py-2 pl-4`}>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 				{items.map((item, i) => (
-					<View key={i} style={tw`items-center mr-4`}>
-						<Image source={item.image} style={{ width: 30, height: 30 }} />
+					<View key={i} style={tw`items-center mr-8`}>
+						<Image source={item.image} style={{ width: 35, height: 35 }} />
 						<Text style={tw`font-bold`}>{item.text}</Text>
 					</View>
 				))}

@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
-const HeaderTabs = () => {
-	const [activeTab, setActiveTab] = useState("Delivery");
-
+const HeaderTabs = ({ activeTab, setActiveTab }) => {
 	return (
 		<View style={tw`bg-white p-5`}>
 			<View style={tw`flex-row self-center`}>
