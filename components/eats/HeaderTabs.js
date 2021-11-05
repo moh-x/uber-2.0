@@ -4,7 +4,7 @@ import tw from "tailwind-react-native-classnames";
 
 const HeaderTabs = ({ activeTab, setActiveTab }) => {
 	return (
-		<View style={tw`bg-white p-5`}>
+		<View style={tw`bg-white p-2`}>
 			<View style={tw`flex-row self-center`}>
 				<HeaderButton
 					text='Delivery'
