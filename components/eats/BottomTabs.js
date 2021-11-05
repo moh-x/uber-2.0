@@ -21,8 +21,8 @@ const tabsData = [
 	{ icon: "user", text: "Account", solid: true },
 ];
 
-const TabElement = ({ icon, text, solid }) => (
-	<TouchableOpacity>
+const TabElement = ({ icon, text, solid }, idx) => (
+	<TouchableOpacity key={idx}>
 		<Icon name={icon} type='font-awesome-5' solid />
 		<Text>{text}</Text>
 	</TouchableOpacity>

@@ -25,16 +25,16 @@ export default function App() {
 						/>
 
 						<Stack.Screen
-							name='Ride'
+							name='Map'
 							component={MapScreen}
 							options={{ headerShown: false }}
 						/>
-
+						{/* 
 						<Stack.Screen
 							name='Eats'
 							component={EatsScreen}
 							options={{ headerShown: false }}
-						/>
+						/> */}
 					</Stack.Navigator>
 				</SafeAreaProvider>
 			</NavigationContainer>

@@ -7,6 +7,7 @@ import tw from "tailwind-react-native-classnames";
 import { GOOGLE_MAPS_KEY } from "@env";
 import {
 	selectDestination,
+	selectLocations,
 	selectOrigin,
 	setTravelTimeInfo,
 } from "../../slices/navSlice";
@@ -14,6 +15,7 @@ import {
 const Map = () => {
 	const origin = useSelector(selectOrigin);
 	const destination = useSelector(selectDestination);
+	const locations = useSelector(selectLocations);
 	const mapRef = useRef(null);
 	const dispatch = useDispatch();
 
@@ -21,10 +23,10 @@ const Map = () => {
 		if (!origin || !destination) return;
 
 		// Zoom to fit markers
-		mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
+		mapRef.current.fitToSuppliedMarkers(["origin", "destination", "location"], {
 			edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
 		});
-	}, [origin, destination]);
+	}, [origin, destination, locations]);
 
 	useEffect(() => {
 		if (!origin || !destination) return;
@@ -46,8 +48,8 @@ const Map = () => {
 			style={tw`flex-1`}
 			mapType='mutedStandard'
 			initialRegion={{
-				latitude: origin.location.lat,
-				longitude: origin.location.lng,
+				latitude: origin?.location.lat,
+				longitude: origin?.location.lng,
 				latitudeDelta: 0.005,
 				longitudeDelta: 0.005,
 			}}
@@ -85,6 +87,21 @@ const Map = () => {
 					identifier='destination'
 				/>
 			)}
+
+			{locations &&
+				locations.map(({ lat, lng, name, distance }) => (
+					<Marker
+						key={lat + lng}
+						coordinate={{
+							latitude: lat,
+							longitude: lng,
+						}}
+						title={name}
+						description={distance}
+						identifier='location'
+						// image={require("../../assets/food.png")}
+					/>
+				))}
 		</MapView>
 	);
 };

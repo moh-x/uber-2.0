@@ -13,8 +13,13 @@ import tw from "tailwind-react-native-classnames";
 import Map from "../components/ride/Map";
 import NavigateCard from "../components/ride/NavigateCard";
 import RideOptionsCard from "../components/ride/RideOptionsCard";
+import EatsScreen from "./EatsScreen";
 
-const MapScreen = () => {
+const MapScreen = ({
+	route: {
+		params: { service },
+	},
+}) => {
 	const Stack = createNativeStackNavigator();
 	const navigation = useNavigation();
 
@@ -27,12 +32,14 @@ const MapScreen = () => {
 				<Icon name='chevron-left' />
 			</TouchableOpacity>
 
-			<View style={tw`h-1/2`}>
+			<View style={tw`h-2/5`}>
 				<Map />
 			</View>
 
-			<View style={tw`h-1/2`}>
-				<Stack.Navigator>
+			<View style={tw`h-3/5`}>
+				<Stack.Navigator
+					initialRouteName={service == "ride" ? "NavigateCard" : "EatsScreen"}
+				>
 					<Stack.Screen
 						name='NavigateCard'
 						component={NavigateCard}
@@ -42,6 +49,12 @@ const MapScreen = () => {
 					<Stack.Screen
 						name='RideOptionsCard'
 						component={RideOptionsCard}
+						options={{ headerShown: false }}
+					/>
+
+					<Stack.Screen
+						name='EatsScreen'
+						component={EatsScreen}
 						options={{ headerShown: false }}
 					/>
 				</Stack.Navigator>

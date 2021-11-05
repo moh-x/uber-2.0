@@ -13,11 +13,11 @@ const items = [
 
 const Categories = () => {
 	return (
-		<View style={tw`mt-2 bg-white py-2 pl-4`}>
+		<View style={tw`bg-white py-2 pl-4`}>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 				{items.map((item, i) => (
 					<View key={i} style={tw`items-center mr-8`}>
-						<Image source={item.image} style={{ width: 35, height: 35 }} />
+						<Image source={item.image} style={{ width: 25, height: 25 }} />
 						<Text style={tw`font-bold`}>{item.text}</Text>
 					</View>
 				))}

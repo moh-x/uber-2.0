@@ -11,13 +11,15 @@ const data = [
 		id: "123",
 		title: "Get a ride",
 		image: "https://links.papareact.com/3pn",
-		screen: "Ride",
+		screen: "Map",
+		service: "ride",
 	},
 	{
 		id: "456",
 		title: "Order Food",
 		image: "https://links.papareact.com/28w",
-		screen: "Eats",
+		screen: "Map",
+		service: "eats",
 	},
 ];
 
@@ -32,7 +34,9 @@ const NavOptions = () => {
 			horizontal
 			renderItem={({ item }) => (
 				<TouchableOpacity
-					onPress={() => navigation.navigate(item.screen)}
+					onPress={() =>
+						navigation.navigate(item.screen, { service: item.service })
+					}
 					style={tw`pr-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40`}
 					disabled={!origin}
 				>
