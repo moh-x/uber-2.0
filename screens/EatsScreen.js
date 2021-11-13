@@ -10,15 +10,15 @@ import RestaurantItems, {
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrigin, setLocations } from "../slices/navSlice";
 import { Divider } from "react-native-elements";
-import BottomTabs from "../components/eats/BottomTabs";
+// import BottomTabs from "../components/eats/BottomTabs";
 
 const EatsScreen = () => {
 	const dispatch = useDispatch();
 	const origin = useSelector(selectOrigin);
 	const [activeTab, setActiveTab] = useState("Delivery");
-	const [restaurantsData, setRestaurantsData] = useState(restaurants);
+	const [restaurantsData, setRestaurantsData] = useState([]);
 
-	const getRestaurants = () => {
+	const getRestaurants = async () => {
 		const baseURL =
 			"https://api.yelp.com/v3/businesses/search?categories=food,nightlife,restaurants";
 		const searchGeoEndpoint = `${baseURL}&latitude=${origin.location.lat}&longitude=${origin.location.lng}`;
@@ -58,6 +58,8 @@ const EatsScreen = () => {
 						),
 					])
 				);
+
+				console.log("Filtered =======> ", filteredData);
 
 				return setRestaurantsData(filteredData);
 			});

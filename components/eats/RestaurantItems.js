@@ -1,14 +1,6 @@
-import React from "react";
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	View,
-	Image,
-	TouchableOpacity,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import tw from "tailwind-react-native-classnames";
+import React, { useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import RestaurantCard from "./RestaurantCard";
 
 export const restaurants = [
 	{
@@ -54,53 +46,28 @@ export const restaurants = [
 ];
 
 const RestaurantItems = ({ restaurantsData }) => {
+	const [selectedId, setSelectedId] = useState(null);
 	const renderRestaurants = ({
-		item: { name, image_url, categories, price, reviews, rating },
+		item: {
+			id,
+			name,
+			image_url,
+			categories,
+			coordinates,
+			price,
+			reviews,
+			rating,
+		},
 	}) => (
-		<TouchableOpacity
-			activeOpacity={1}
-			style={tw` flex-row mt-1 p-3 bg-white rounded-lg`}
-		>
-			<View style={tw`w-4/12`}>
-				<Image
-					source={{
-						uri:
-							image_url ||
-							"https://yasirsgyropita.com/img/placeholders/placeholder_restaurant_steak.png?v=1",
-					}}
-					alt={name}
-					style={{ width: "100%", height: 72 }}
-				/>
-			</View>
-
-			<View style={tw`justify-between w-7/12 p-2`}>
-				<Text style={tw`text-base font-bold`}>{name}</Text>
-
-				<View style={tw`flex-row`}>
-					<Text style={tw`text-sm text-gray-500`}>34-45 · min</Text>
-					<Text style={tw`text-sm font-semibold ml-4`}>{rating}</Text>
-				</View>
-			</View>
-
-			<View style={tw`w-1/12 items-end justify-between`}>
-				<TouchableOpacity>
-					<Icon
-						name='heart-outline'
-						type='material-community'
-						size={28}
-						color='gray'
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Icon
-						name='sign-direction'
-						type='material-community'
-						size={28}
-						color='gray'
-					/>
-				</TouchableOpacity>
-			</View>
-		</TouchableOpacity>
+		<RestaurantCard
+			id={id}
+			name={name}
+			image_url={image_url}
+			coordinates={coordinates}
+			rating={rating}
+			selectedId={selectedId}
+			setSelectedId={setSelectedId}
+		/>
 	);
 
 	return (
@@ -108,6 +75,7 @@ const RestaurantItems = ({ restaurantsData }) => {
 			data={restaurantsData}
 			keyExtractor={(_, idx) => idx.toString()}
 			renderItem={renderRestaurants}
+			extraData={selectedId}
 		/>
 	);
 };

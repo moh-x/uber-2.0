@@ -11,6 +11,7 @@ import {
 	selectOrigin,
 	setTravelTimeInfo,
 } from "../../slices/navSlice";
+import ForknKnife from "../custom/ForknKnife";
 
 const Map = () => {
 	const origin = useSelector(selectOrigin);
@@ -20,12 +21,15 @@ const Map = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!origin || !destination) return;
+		if (!origin || !destination || !locations) return;
 
 		// Zoom to fit markers
-		mapRef.current.fitToSuppliedMarkers(["origin", "destination", "location"], {
-			edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-		});
+		mapRef.current.fitToSuppliedMarkers(
+			["origin", "destination" /*...locations?.map((_, i) => `location${i}`)*/],
+			{
+				edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+			}
+		);
 	}, [origin, destination, locations]);
 
 	useEffect(() => {
@@ -36,11 +40,14 @@ const Map = () => {
 				`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAPS_KEY}`
 			)
 				.then((res) => res.json())
-				.then((data) => dispatch(setTravelTimeInfo(data.rows[0].elements[0])));
+				.then((data) => dispatch(setTravelTimeInfo(data.rows[0].elements[0])))
+				.catch((e) => console.log(e));
 		};
 
 		getTravelTime();
 	}, [origin, destination, GOOGLE_MAPS_KEY]);
+
+	useEffect(() => {}, []);
 
 	return (
 		<MapView
@@ -85,21 +92,22 @@ const Map = () => {
 					title='Destination'
 					description={destination.description}
 					identifier='destination'
+					pinColor='green'
 				/>
 			)}
 
-			{locations &&
-				locations.map(({ lat, lng, name, distance }) => (
+			{locations?.length > 0 &&
+				locations.map(({ lat, lng, name, distance }, i) => (
 					<Marker
-						key={lat + lng}
+						key={i}
 						coordinate={{
 							latitude: lat,
 							longitude: lng,
 						}}
 						title={name}
 						description={distance}
-						identifier='location'
-						// image={require("../../assets/food.png")}
+						identifier={`location${i}`}
+						pinColor='blue'
 					/>
 				))}
 		</MapView>

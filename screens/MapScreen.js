@@ -1,18 +1,22 @@
-import { useNavigation } from "@react-navigation/core";
+import React, { useCallback } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/core";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
 import {
 	KeyboardAvoidingView,
+	Platform,
+	StatusBar,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from "react-native";
 import { Icon } from "react-native-elements";
+import { useDispatch } from "react-redux";
 import tw from "tailwind-react-native-classnames";
 import Map from "../components/ride/Map";
 import NavigateCard from "../components/ride/NavigateCard";
 import RideOptionsCard from "../components/ride/RideOptionsCard";
+import { setDestination, setLocations } from "../slices/navSlice";
 import EatsScreen from "./EatsScreen";
 
 const MapScreen = ({
@@ -22,11 +26,25 @@ const MapScreen = ({
 }) => {
 	const Stack = createNativeStackNavigator();
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
+
+	useFocusEffect(
+		useCallback(() => {
+			StatusBar.setBarStyle("dark-content");
+			Platform.OS === "android" &&
+				StatusBar.setTranslucent(true) &&
+				StatusBar.setBackgroundColor("transparent");
+		}, [])
+	);
 
 	return (
 		<KeyboardAvoidingView behavior='height'>
 			<TouchableOpacity
-				onPress={() => navigation.navigate("Home")}
+				onPress={() => {
+					navigation.navigate("Home");
+					dispatch(setDestination(null));
+					dispatch(setLocations([]));
+				}}
 				style={tw`absolute bg-gray-100 top-10 left-4 z-30 p-2 rounded-full shadow-lg`}
 			>
 				<Icon name='chevron-left' />

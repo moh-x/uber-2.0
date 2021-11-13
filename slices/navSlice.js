@@ -4,7 +4,7 @@ const initialState = {
 	origin: null,
 	destination: null,
 	travelTimeInfo: null,
-	locations: null,
+	locations: [],
 };
 
 export const navSlice = createSlice({
