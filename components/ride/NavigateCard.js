@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+	KeyboardAvoidingView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
 import { GOOGLE_MAPS_KEY } from "@env";
@@ -15,7 +21,7 @@ const NavigateCard = () => {
 	const navigation = useNavigation();
 
 	return (
-		<SafeAreaView style={tw`bg-white flex-1`}>
+		<KeyboardAvoidingView behavior='padding' style={tw`bg-white flex-1`}>
 			<Text style={tw`text-center py-3 text-xl`}>Hello Rider!</Text>
 			<View style={tw`border-t border-gray-200 flex-shrink`}>
 				<View>
@@ -35,6 +41,7 @@ const NavigateCard = () => {
 									description: data.description,
 								})
 							);
+							console.log(details.geometry.location, data.description);
 							navigation.navigate("RideOptionsCard");
 						}}
 						styles={inputBoxStyles}
@@ -44,7 +51,7 @@ const NavigateCard = () => {
 				<NavFavorites />
 			</View>
 
-			<View
+			{/* <View
 				style={tw`flex-row bg-white justify-evenly py-2 mt-auto border-t border-gray-100`}
 			>
 				<TouchableOpacity
@@ -66,8 +73,8 @@ const NavigateCard = () => {
 					/>
 					<Text style={tw`text-center`}>Eats</Text>
 				</TouchableOpacity>
-			</View>
-		</SafeAreaView>
+			</View> */}
+		</KeyboardAvoidingView>
 	);
 };
 

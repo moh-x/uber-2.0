@@ -4,7 +4,7 @@ import tw from "tailwind-react-native-classnames";
 import { GOOGLE_MAPS_KEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useDispatch } from "react-redux";
-import { setDestination, setOrigin } from "../slices/navSlice";
+import { setDestination, setLocations, setOrigin } from "../slices/navSlice";
 import NavOptions from "../components/ride/NavOptions";
 
 import NavFavorites from "../components/ride/NavFavorites";
@@ -36,7 +36,7 @@ const HomeScreen = () => {
 									location: details?.geometry?.location,
 									description: data?.description,
 									identifier: details?.address_components?.reduce(
-										(out, { long_name, types }) => {
+										(_, { long_name, types }) => {
 											if (types.includes("administrative_area_level_1"))
 												return long_name;
 										}
@@ -44,6 +44,7 @@ const HomeScreen = () => {
 								})
 							);
 							dispatch(setDestination(null));
+							dispatch(setLocations(null));
 							// console.log("data", data, "details", details);
 						}}
 						styles={{ container: { flex: 0 }, textInput: { fontSize: 18 } }}

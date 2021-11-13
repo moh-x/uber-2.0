@@ -7,24 +7,30 @@ import tw from "tailwind-react-native-classnames";
 import { GOOGLE_MAPS_KEY } from "@env";
 import {
 	selectDestination,
+	selectLocations,
 	selectOrigin,
 	setTravelTimeInfo,
 } from "../../slices/navSlice";
+import ForknKnife from "../custom/ForknKnife";
 
 const Map = () => {
 	const origin = useSelector(selectOrigin);
 	const destination = useSelector(selectDestination);
+	const locations = useSelector(selectLocations);
 	const mapRef = useRef(null);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!origin || !destination) return;
+		if (!origin || !destination || !locations) return;
 
 		// Zoom to fit markers
-		mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-			edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-		});
-	}, [origin, destination]);
+		mapRef.current.fitToSuppliedMarkers(
+			["origin", "destination" /*...locations?.map((_, i) => `location${i}`)*/],
+			{
+				edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+			}
+		);
+	}, [origin, destination, locations]);
 
 	useEffect(() => {
 		if (!origin || !destination) return;
@@ -34,11 +40,14 @@ const Map = () => {
 				`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAPS_KEY}`
 			)
 				.then((res) => res.json())
-				.then((data) => dispatch(setTravelTimeInfo(data.rows[0].elements[0])));
+				.then((data) => dispatch(setTravelTimeInfo(data.rows[0].elements[0])))
+				.catch((e) => console.log(e));
 		};
 
 		getTravelTime();
 	}, [origin, destination, GOOGLE_MAPS_KEY]);
+
+	useEffect(() => {}, []);
 
 	return (
 		<MapView
@@ -46,8 +55,8 @@ const Map = () => {
 			style={tw`flex-1`}
 			mapType='mutedStandard'
 			initialRegion={{
-				latitude: origin.location.lat,
-				longitude: origin.location.lng,
+				latitude: origin?.location.lat,
+				longitude: origin?.location.lng,
 				latitudeDelta: 0.005,
 				longitudeDelta: 0.005,
 			}}
@@ -83,8 +92,24 @@ const Map = () => {
 					title='Destination'
 					description={destination.description}
 					identifier='destination'
+					pinColor='green'
 				/>
 			)}
+
+			{locations?.length > 0 &&
+				locations.map(({ lat, lng, name, distance }, i) => (
+					<Marker
+						key={i}
+						coordinate={{
+							latitude: lat,
+							longitude: lng,
+						}}
+						title={name}
+						description={distance}
+						identifier={`location${i}`}
+						pinColor='blue'
+					/>
+				))}
 		</MapView>
 	);
 };

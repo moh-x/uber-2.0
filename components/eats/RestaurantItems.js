@@ -1,14 +1,6 @@
-import React from "react";
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	View,
-	Image,
-	TouchableOpacity,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import tw from "tailwind-react-native-classnames";
+import React, { useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import RestaurantCard from "./RestaurantCard";
 
 export const restaurants = [
 	{
@@ -54,52 +46,36 @@ export const restaurants = [
 ];
 
 const RestaurantItems = ({ restaurantsData }) => {
+	const [selectedId, setSelectedId] = useState(null);
 	const renderRestaurants = ({
-		item: { name, image_url, categories, price, reviews, rating },
+		item: {
+			id,
+			name,
+			image_url,
+			categories,
+			coordinates,
+			price,
+			reviews,
+			rating,
+		},
 	}) => (
-		<TouchableOpacity
-			activeOpacity={1}
-			style={tw`my-2 px-3 py-2 bg-white rounded-lg`}
-		>
-			<View>
-				<Image
-					source={{
-						uri:
-							image_url ||
-							"https://yasirsgyropita.com/img/placeholders/placeholder_restaurant_steak.png?v=1",
-					}}
-					alt={name}
-					style={{ width: "100%", height: 180 }}
-				/>
-				<TouchableOpacity style={tw`absolute right-4 top-4`}>
-					<Icon
-						name='heart-outline'
-						type='material-community'
-						size={25}
-						color='#fff'
-					/>
-				</TouchableOpacity>
-			</View>
-
-			<View style={tw`flex-row justify-between items-center mt-2`}>
-				<View>
-					<Text style={tw`text-base font-bold`}>{name}</Text>
-					<Text style={tw`text-sm text-gray-500`}>34-45 · min</Text>
-				</View>
-				<View
-					style={tw`bg-gray-300 w-8 h-8 p-1 rounded-full justify-center items-center`}
-				>
-					<Text style={tw`font-semibold text-center`}>{rating}</Text>
-				</View>
-			</View>
-		</TouchableOpacity>
+		<RestaurantCard
+			id={id}
+			name={name}
+			image_url={image_url}
+			coordinates={coordinates}
+			rating={rating}
+			selectedId={selectedId}
+			setSelectedId={setSelectedId}
+		/>
 	);
 
 	return (
 		<FlatList
 			data={restaurantsData}
-			keyExtractor={(item, idx) => idx.toString()}
+			keyExtractor={(_, idx) => idx.toString()}
 			renderItem={renderRestaurants}
+			extraData={selectedId}
 		/>
 	);
 };

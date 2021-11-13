@@ -7,17 +7,18 @@ import HeaderTabs from "../components/eats/HeaderTabs";
 import RestaurantItems, {
 	restaurants,
 } from "../components/eats/RestaurantItems";
-import { useSelector } from "react-redux";
-import { selectOrigin } from "../slices/navSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrigin, setLocations } from "../slices/navSlice";
 import { Divider } from "react-native-elements";
-import BottomTabs from "../components/eats/BottomTabs";
+// import BottomTabs from "../components/eats/BottomTabs";
 
 const EatsScreen = () => {
+	const dispatch = useDispatch();
 	const origin = useSelector(selectOrigin);
 	const [activeTab, setActiveTab] = useState("Delivery");
-	const [restaurantsData, setRestaurantsData] = useState(restaurants);
+	const [restaurantsData, setRestaurantsData] = useState([]);
 
-	const getRestaurants = () => {
+	const getRestaurants = async () => {
 		const baseURL =
 			"https://api.yelp.com/v3/businesses/search?categories=food,nightlife,restaurants";
 		const searchGeoEndpoint = `${baseURL}&latitude=${origin.location.lat}&longitude=${origin.location.lng}`;
@@ -39,13 +40,28 @@ const EatsScreen = () => {
 							})
 						);
 				}
-				return setRestaurantsData(
-					data.filter(
-						(business) =>
-							business.transactions?.includes(activeTab.toLowerCase()) ||
-							business.transactions?.length == 0
-					)
+				const filteredData = data.filter(
+					(business) =>
+						business.transactions?.includes(activeTab.toLowerCase()) ||
+						business.transactions?.length == 0
 				);
+
+				dispatch(
+					setLocations([
+						...filteredData.map(
+							({ coordinates: { latitude, longitude }, name, distance }) => ({
+								lat: latitude,
+								lng: longitude,
+								name,
+								distance: `${distance.toFixed(2).toString()} m`,
+							})
+						),
+					])
+				);
+
+				console.log("Filtered =======> ", filteredData);
+
+				return setRestaurantsData(filteredData);
 			});
 	};
 
@@ -54,15 +70,17 @@ const EatsScreen = () => {
 	}, [activeTab]);
 
 	return (
-		<SafeAreaView style={tw`bg-gray-300 flex-1 mt-5`}>
+		<View style={tw`bg-gray-300 flex-1`}>
 			<HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+			<Divider width={1} />
 			<Categories />
+			<Divider width={1} />
 
 			<RestaurantItems restaurantsData={restaurantsData} />
 
-			<Divider width={1} />
-			<BottomTabs />
-		</SafeAreaView>
+			{/* <Divider width={1} /> */}
+			{/* <BottomTabs /> */}
+		</View>
 	);
 };
 
