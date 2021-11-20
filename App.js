@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MapScreen from "./screens/MapScreen";
 import EatsScreen from "./screens/EatsScreen";
+import Restaurant from "./screens/Restaurant";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,12 +30,12 @@ export default function App() {
 							component={MapScreen}
 							options={{ headerShown: false }}
 						/>
-						{/* 
+
 						<Stack.Screen
-							name='Eats'
-							component={EatsScreen}
+							name='Restaurant'
+							component={Restaurant}
 							options={{ headerShown: false }}
-						/> */}
+						/>
 					</Stack.Navigator>
 				</SafeAreaProvider>
 			</NavigationContainer>

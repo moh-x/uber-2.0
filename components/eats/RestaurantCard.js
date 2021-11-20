@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/core";
 import React, { useState } from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
@@ -12,12 +13,16 @@ function RestaurantCard({
 	categories,
 	coordinates: { latitude, longitude },
 	price,
-	reviews,
+	review_count,
 	rating,
+	display_phone,
+	display_address,
+	is_closed,
 	selectedId,
 	setSelectedId,
 }) {
 	const dispatch = useDispatch();
+	const navigation = useNavigation();
 	// const [selected, setSelected] = useState(false);
 
 	return (
@@ -66,7 +71,20 @@ function RestaurantCard({
 						color='gray'
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity>
+				<TouchableOpacity
+					onPress={() => {
+						dispatch(
+							setDestination({
+								location: { lat: latitude, lng: longitude },
+								description: name,
+								image_url,
+								categories,
+								rating,
+							})
+						);
+						navigation.navigate("Restaurant");
+					}}
+				>
 					<Icon
 						name='sign-direction'
 						type='material-community'

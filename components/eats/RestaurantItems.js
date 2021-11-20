@@ -55,16 +55,25 @@ const RestaurantItems = ({ restaurantsData }) => {
 			categories,
 			coordinates,
 			price,
-			reviews,
+			review_count,
 			rating,
+			display_phone,
+			is_closed,
+			location: { display_address },
 		},
 	}) => (
 		<RestaurantCard
 			id={id}
 			name={name}
 			image_url={image_url}
+			categories={categories}
 			coordinates={coordinates}
+			price={price}
 			rating={rating}
+			review_count={review_count}
+			display_phone={display_phone}
+			display_address={display_address}
+			is_closed={is_closed}
 			selectedId={selectedId}
 			setSelectedId={setSelectedId}
 		/>
