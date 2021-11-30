@@ -80,6 +80,11 @@ function RestaurantCard({
 								image_url,
 								categories,
 								rating,
+								price,
+								review_count,
+								display_phone,
+								display_address,
+								is_closed,
 							})
 						);
 						navigation.navigate("Restaurant");

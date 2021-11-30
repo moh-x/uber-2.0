@@ -15,19 +15,21 @@ const Restaurant = () => {
 };
 
 const About = () => {
-	const destination = useSelector(selectDestination);
-	console.log("DESTINATION", destination);
+	const { image_url, description, categories, price, rating, review_count } =
+		useSelector(selectDestination);
+	// console.log("DESTINATION", destination);
 
 	return (
 		<View>
 			<Image
-				source={{ uri: destination.image_url }}
+				source={{ uri: image_url }}
 				style={{ width: "100%", height: 180 }}
 			/>
-			<Text style={tw`text-2xl font-semibold mt-2 mx-3`}>
-				{destination.description}
+			<Text style={tw`text-2xl font-semibold mt-2 mx-3`}>{description}</Text>
+			<Text>
+				{categories.map((category) => `${category.title} • `)}
+				{price} • {rating} • {review_count}
 			</Text>
-			<Text></Text>
 		</View>
 	);
 };
